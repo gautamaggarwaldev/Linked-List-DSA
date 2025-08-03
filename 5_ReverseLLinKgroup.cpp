@@ -21,13 +21,13 @@ public:
             return head;
         ListNode *node = head;
         int count = 0;
-        while (node != NULL && count < k)
+        while (node != NULL && count < k) // Count the number of nodes in the current group
         {
             node = node->next;
             count++;
         }
 
-        if (count < k)
+        if (count < k) // If there are not enough nodes to reverse, return the head as is
             return head;
         ListNode *curr = head;
         ListNode *prev = NULL;
@@ -35,16 +35,16 @@ public:
         count = 0;
         while (curr != NULL && count < k)
         {
-            next = curr->next;
-            curr->next = prev;
-            prev = curr;
-            curr = next;
+            next = curr->next; // Store the next node
+            curr->next = prev; // Reverse the current node's pointer
+            prev = curr; // Move prev to the current node
+            curr = next; // Move to the next node
             count++;
         }
 
         if (next != NULL)
         {
-            head->next = reverseKGroup(next, k);
+            head->next = reverseKGroup(next, k); // Recursively reverse the next group
         }
         return prev;
     }
