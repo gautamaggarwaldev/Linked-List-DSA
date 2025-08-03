@@ -14,6 +14,15 @@ public:
 class Solution
 {
 public:
+    ListNode *solve(ListNode *head)
+    {
+        if (head == NULL || head->next == NULL)
+            return head;
+        ListNode *newHead = solve(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return newHead;
+    }
     ListNode *reverseList(ListNode *head)
     {
         ListNode *curr = head;
@@ -39,7 +48,7 @@ int main()
     head->next->next->next->next = new ListNode(5);
 
     ListNode *reversedHead = sol.reverseList(head);
-    
+
     ListNode *temp = reversedHead;
     while (temp != NULL)
     {
