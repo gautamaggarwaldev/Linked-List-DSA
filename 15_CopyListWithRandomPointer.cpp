@@ -98,7 +98,7 @@ public:
                 }
                 else
                 {
-                    temp->next->random = NULL;
+                    temp->next->random = NULL; // If the original node's random is NULL, set cloned node's random to NULL
                 }
             }
             temp = temp->next->next;
