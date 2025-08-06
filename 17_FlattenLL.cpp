@@ -1,17 +1,18 @@
 #include <iostream>
 using namespace std;
 
-struct Node{
+struct Node
+{
     int data;
-    struct Node * next;
-    struct Node * bottom;
+    struct Node *next;
+    struct Node *bottom;
 
-    Node(int x){
+    Node(int x)
+    {
         data = x;
         next = NULL;
         bottom = NULL;
     }
-
 };
 
 class Solution
@@ -19,32 +20,38 @@ class Solution
 public:
     Node *merge(Node *a, Node *b)
     {
-        if (a == NULL)
-            return b;
-        if (b == NULL)
-            return a;
+        Node dummy(0); // Dummy node to build the result
+        Node *tail = &dummy;
 
-        Node *res;
-        if (a->data < b->data) // Compare the data of the nodes
+        while (a && b)
         {
-            res = a;
-            res->bottom = merge(a->bottom, b); // Recursively merge the bottom lists
+            if (a->data < b->data)
+            {
+                tail->bottom = a;
+                a = a->bottom;
+            }
+            else
+            {
+                tail->bottom = b;
+                b = b->bottom;
+            }
+            tail = tail->bottom;
         }
-        else
-        {
-            res = b;
-            res->bottom = merge(a, b->bottom); // Recursively merge the bottom lists
-        }
-        res->next = NULL; // Ensure the next pointer is NULL as we are merging bottom lists 
-        // and not the next pointers of the original lists.
-        return res;
+
+        // Attach the remaining list
+        if (a)
+            tail->bottom = a;
+        if (b)
+            tail->bottom = b;
+
+        return dummy.bottom;
     }
     Node *flatten(Node *root)
     {
         if (root == NULL || root->next == NULL)
             return root;
         root->next = flatten(root->next); // Flatten the next list
-        root = merge(root, root->next); // Merge the current list with the flattened next list
+        root = merge(root, root->next);   // Merge the current list with the flattened next list
         // Now root is the head of the merged list
         return root;
     }
